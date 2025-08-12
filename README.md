@@ -27,7 +27,7 @@
 - Clone your application's code repository onto the VM instance:
     
     ```bash
-    git clone https://github.com/musfiqur-m/juice-shop
+    git clone https://github.com/musfiqur-m/owasp_juice-shop
     ```
     
 ### **Phase 2: Security tools installation**
@@ -116,8 +116,21 @@
     ```
 
 **To access**
- - localhost:8080 (find password using this command: sudo cat /var/lib/jenkins/secrets/initialAdminPassword), now you can create an admin user. In our case, its musfiqur97,7573
+ - localhost:8080 (find password using this command: sudo cat /var/lib/jenkins/secrets/initialAdminPassword), now you can create an admin user. In our case, it is musfiqur97,7573
 
+**Alternative Installation: All tools using scripts:**
+
+- Change directory to owasp_juice-shop/installation and run the following scripts in the terminal of host system
+    
+    ```bash
+    ./docker.sh
+    ./update.sh
+    ./sonarqube.sh
+	./trivy.sh
+    ./cyclonedx.sh
+    ./snyk.sh
+	./jenkins.sh
+    ```
 
 ### **Phase 3: Tools plugins installation**
 - Install Necessary Plugins in Jenkins:
@@ -138,14 +151,14 @@
 - Click on Apply and Save
 
 
-### **Phase 4: Credentials and access token id creation for security tools**
+### **Phase 4: Credentials and access token ID creation for security tools**
 
 **Step 1: Create the Sonar token:**
 - Goto SonarQube Dashboard → Administration → Security → Users → Update Tokens (Under Tokens/Beside Token Number)→ Enter a Name → Generate → Copy it.
 - Goto Jenkins Dashboard → Manage Jenkins → Credentials → System → Global credentials (unrestricted) → Add Credentials → Secret text → Paste it in Secret → ID: Sonar−token → Description: Sonar−token → Create.
 
 **Step 2: Create Snyk token:**
-- Create an account on apps.snyk.io for authentication key for sonar token. It will be in the account setting you need to press click to show to get the key.
+- Create an account on apps.snyk.io for the authentication key for sonar token. It will be in the account settings you need to press click to show to get the key.
 - Goto Jenkins Dashboard → Manage Jenkins → Credentials → System → Global credentials (unrestricted) → Add Credentials → Secret text → Paste it in Secret → ID: Snyk−token−id → Description: Snyk−token−→Create
 
 **Step 2: Add DockerHub Credentials:**
@@ -192,7 +205,7 @@ pipeline{
         }
         stage('Checkout from Git'){
             steps{
-                git branch: 'master', url: 'https://github.com/musfiqur-m/juice-shop.git'
+                git branch: 'master', url: 'https://github.com/musfiqur-m/owasp_juice-shop.git'
             }
         }
         stage('SAST - SonarQube'){
