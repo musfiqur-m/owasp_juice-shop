@@ -1,242 +1,279 @@
-# ![Juice Shop Logo](https://raw.githubusercontent.com/juice-shop/juice-shop/master/frontend/src/assets/public/images/JuiceShop_Logo_100px.png) OWASP Juice Shop
+# Deploy Juice shop application on VMware using Jenkins - DevSecOps Project!
 
-[![OWASP Flagship](https://img.shields.io/badge/owasp-flagship%20project-48A646.svg)](https://owasp.org/projects/#sec-flagships)
-[![GitHub release](https://img.shields.io/github/release/juice-shop/juice-shop.svg)](https://github.com/juice-shop/juice-shop/releases/latest)
-[![Twitter Follow](https://img.shields.io/twitter/follow/owasp_juiceshop.svg?style=social&label=Follow)](https://twitter.com/owasp_juiceshop)
-[![Subreddit subscribers](https://img.shields.io/reddit/subreddit-subscribers/owasp_juiceshop?style=social)](https://reddit.com/r/owasp_juiceshop)
+### **Phase 1: Initial Setup and Deployment**
 
-![CI/CD Pipeline](https://github.com/juice-shop/juice-shop/workflows/CI/CD%20Pipeline/badge.svg?branch=master)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/6206c8f3972bcc97a033/test_coverage)](https://codeclimate.com/github/juice-shop/juice-shop/test_coverage)
-[![Maintainability](https://api.codeclimate.com/v1/badges/6206c8f3972bcc97a033/maintainability)](https://codeclimate.com/github/juice-shop/juice-shop/maintainability)
-[![Code Climate technical debt](https://img.shields.io/codeclimate/tech-debt/juice-shop/juice-shop)](https://codeclimate.com/github/juice-shop/juice-shop/trends/technical_debt)
-[![Cypress tests](https://img.shields.io/endpoint?url=https://dashboard.cypress.io/badge/simple/3hrkhu/master&style=flat&logo=cypress)](https://dashboard.cypress.io/projects/3hrkhu/runs)
-[![OpenSSF Best Practices](https://www.bestpractices.dev/projects/223/badge)](https://www.bestpractices.dev/projects/223)
-![GitHub stars](https://img.shields.io/github/stars/juice-shop/juice-shop.svg?label=GitHub%20%E2%98%85&style=flat)
-[![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-v2.0%20adopted-ff69b4.svg)](CODE_OF_CONDUCT.md)
+**Step 1: Launch VMware (Ubuntu 22.04/24.04):**
 
-> [The most trustworthy online shop out there.](https://twitter.com/dschadow/status/706781693504589824)
-> ([@dschadow](https://github.com/dschadow)) —
-> [The best juice shop on the whole internet!](https://twitter.com/shehackspurple/status/907335357775085568)
-> ([@shehackspurple](https://twitter.com/shehackspurple)) —
-> [Actually the most bug-free vulnerable application in existence!](https://youtu.be/TXAztSpYpvE?t=26m35s)
-> ([@vanderaj](https://twitter.com/vanderaj)) —
-> [First you 😂😂then you 😢](https://twitter.com/kramse/status/1073168529405472768)
-> ([@kramse](https://twitter.com/kramse)) —
-> [But this doesn't have anything to do with juice.](https://twitter.com/coderPatros/status/1199268774626488320)
-> ([@coderPatros' wife](https://twitter.com/coderPatros))
+- Create and Launch Virtual Machine (Ubuntu 24.04/22.04): (CPU: 4 Cores, RAM: 8 GB)
+- Connect to the instance using SSH.
 
-OWASP Juice Shop is probably the most modern and sophisticated insecure web application! It can be used in security
-trainings, awareness demos, CTFs and as a guinea pig for security tools! Juice Shop encompasses vulnerabilities from the
-entire
-[OWASP Top Ten](https://owasp.org/www-project-top-ten) along with many other security flaws found in real-world
-applications!
 
-![Juice Shop Screenshot Slideshow](screenshots/slideshow.gif)
+**Step 2: Install the Update:**
 
-For a detailed introduction, full list of features and architecture overview please visit the official project page:
-<https://owasp-juice.shop>
+- Update all the packages and then clone the code.
+    
+    ```bash
+    sudo apt update
+    sudo apt upgrade
+    ```
+- Install Git
 
-## Table of contents
+    ```bash
+    sudo apt install git-all
+    ```
+**Step 3: Clone the Code:**
 
-- [Setup](#setup)
-    - [From Sources](#from-sources)
-    - [Packaged Distributions](#packaged-distributions)
-    - [Docker Container](#docker-container)
-    - [Vagrant](#vagrant)
-- [Demo](#demo)
-- [Documentation](#documentation)
-    - [Node.js version compatibility](#nodejs-version-compatibility)
-    - [Troubleshooting](#troubleshooting)
-    - [Official companion guide](#official-companion-guide)
-- [Contributing](#contributing)
-- [References](#references)
-- [Merchandise](#merchandise)
-- [Donations](#donations)
-- [Contributors](#contributors)
-- [Licensing](#licensing)
+- Update all the packages and then clone the code.
+- Clone your application's code repository onto the VM instance:
+    
+    ```bash
+    git clone https://github.com/musfiqur-m/juice-shop
+    ```
+    
+### **Phase 2: Security tools installation**
 
-## Setup
+**Step 1: Install Docker:**
 
-> You can find some less common installation variations as well as instructions to run Juice Shop on a variety of cloud computing providers in
-> [the _Running OWASP Juice Shop_ documentation](https://pwning.owasp-juice.shop/companion-guide/latest/part1/running.html).
+- Install Docker
+    
+    ```bash
+    sudo apt-get update
+	sudo apt-get install docker.io -y
+	sudo usermod -aG docker $USER
+	newgrp docker
+	sudo chmod 777 /var/run/docker.sock
+    ```
 
-### From Sources
+**Step 2: Install SonarQube on the VM instance to scan vulnerabilities:**
 
-![GitHub repo size](https://img.shields.io/github/repo-size/juice-shop/juice-shop.svg)
+- Install Sonarqube using docker
+    
+    ```bash
+    docker run -d --name sonar -p 9000:9000 sonarqube
+    ```
 
-1. Install [node.js](#nodejs-version-compatibility)
-2. Run `git clone https://github.com/juice-shop/juice-shop.git --depth 1` (or
-   clone [your own fork](https://github.com/juice-shop/juice-shop/fork)
-   of the repository)
-3. Go into the cloned folder with `cd juice-shop`
-4. Run `npm install` (only has to be done before first start or when you change the source code)
-5. Run `npm start`
-6. Browse to <http://localhost:3000>
+**To access**
 
-### Packaged Distributions
+- YourIP:9000 (by default username & password is admin), now you can change the password. In our case, its 123456
+- 𝑆𝑜𝑛𝑎𝑟𝑄𝑢𝑏𝑒 𝐷𝑎𝑠ℎ𝑏𝑜𝑎𝑟𝑑 → 𝑀𝑎𝑛𝑢𝑎𝑙𝑙𝑦 → 𝑃𝑟𝑜𝑗𝑒𝑐𝑡 𝐷𝑖𝑠𝑝𝑙𝑎𝑦 𝑁𝑎𝑚𝑒 𝑎𝑛𝑑 𝑘𝑒𝑦 (𝐽𝑢𝑖𝑐𝑒 −
+𝑠ℎ𝑜𝑝) → 𝑆𝑒𝑡𝑢𝑝 → 𝐿𝑜𝑐𝑎𝑙𝑙𝑦 → 𝐺𝑒𝑛𝑒𝑟𝑎𝑡𝑒 → 𝐶𝑜𝑛𝑡𝑖𝑛𝑢𝑒 → 𝑂𝑡ℎ𝑒𝑟𝑠 → 𝐿𝑖𝑛𝑢𝑥.
 
-[![GitHub release](https://img.shields.io/github/downloads/juice-shop/juice-shop/total.svg)](https://github.com/juice-shop/juice-shop/releases/latest)
-[![SourceForge](https://img.shields.io/sourceforge/dm/juice-shop?label=sourceforge%20downloads)](https://sourceforge.net/projects/juice-shop/)
-[![SourceForge](https://img.shields.io/sourceforge/dt/juice-shop?label=sourceforge%20downloads)](https://sourceforge.net/projects/juice-shop/)
 
-1. Install a 64bit [node.js](#nodejs-version-compatibility) on your Windows, MacOS or Linux machine
-2. Download `juice-shop-<version>_<node-version>_<os>_x64.zip` (or
-   `.tgz`) attached to
-   [latest release](https://github.com/juice-shop/juice-shop/releases/latest)
-3. Unpack and `cd` into the unpacked folder
-4. Run `npm start`
-5. Browse to <http://localhost:3000>
+**Step 3: Install Trivy on the VM instance to scan for vulnerabilities:**
 
-> Each packaged distribution includes some binaries for `sqlite3` and
-> `libxmljs2` bound to the OS and node.js version which `npm install` was
-> executed on.
+- Install Trivy
+    ```bash
+    sudo apt-get install wget apt-transport-https gnupg lsb-release
+    wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | sudo apt-key add -
+    echo deb https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main | sudo tee -a /etc/apt/sources.list.d/trivy.list
+    sudo apt-get update
+	sudo apt-get install trivy
+    ```
+**To scan image using trivy**
 
-### Docker Container
+- trivy image <imageid> #you can find images using docker images
 
-[![Docker Pulls](https://img.shields.io/docker/pulls/bkimminich/juice-shop.svg)](https://hub.docker.com/r/bkimminich/juice-shop)
-![Docker Stars](https://img.shields.io/docker/stars/bkimminich/juice-shop.svg)
-[![](https://images.microbadger.com/badges/image/bkimminich/juice-shop.svg)](https://microbadger.com/images/bkimminich/juice-shop
-"Get your own image badge on microbadger.com")
-[![](https://images.microbadger.com/badges/version/bkimminich/juice-shop.svg)](https://microbadger.com/images/bkimminich/juice-shop
-"Get your own version badge on microbadger.com")
+**Step 4: Install CycloneDX:**
 
-1. Install [Docker](https://www.docker.com)
-2. Run `docker pull bkimminich/juice-shop`
-3. Run `docker run --rm -p 127.0.0.1:3000:3000 bkimminich/juice-shop`
-4. Browse to <http://localhost:3000> (on macOS and Windows browse to
-   <http://192.168.99.100:3000> if you are using docker-machine instead of the native docker installation)
+- In your Jenkins environment, install the tool globally (or as part of your project’s dependencies) using a command like:
 
-### Vagrant
+    ```bash
+    sudo apt install npm
+    sudo npm install -g n
+    sudo n 20.18.0
+    sudo npm install -g @cyclonedx/cyclonedx-npm
+    ```
+**Step 5: Install Snyk:**
+- Install Snyk
+    
+    ```bash
+    curl https://static.snyk.io/cli/latest/snyk-linux -o snyk
+    chmod +x ./snyk
+    sudo mv ./snyk /usr/local/bin/  
+    ```
+**Step 6: Install Java:**
 
-1. Install [Vagrant](https://www.vagrantup.com/downloads.html) and
-   [Virtualbox](https://www.virtualbox.org/wiki/Downloads)
-2. Run `git clone https://github.com/juice-shop/juice-shop.git` (or
-   clone [your own fork](https://github.com/juice-shop/juice-shop/fork)
-   of the repository)
-3. Run `cd vagrant && vagrant up`
-4. Browse to [192.168.56.110](http://192.168.56.110)
+- Install Java
+    ```bash
+    sudo apt update
+    sudo apt install fontconfig openjdk-17-jre
+    ```
 
-## Demo
+**Step 7: Install Jenkins:**
 
-Feel free to have a look at the latest version of OWASP Juice Shop:
-<http://demo.owasp-juice.shop>
+- Install Jenkins
+    
+    ```bash
+    sudo wget -O /usr/share/keyrings/jenkins-keyring.asc \
+    https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key
+	echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] \
+    https://pkg.jenkins.io/debian-stable binary/ | sudo tee \
+    /etc/apt/sources.list.d/jenkins.list > /dev/null
+	sudo apt-get update
+    sudo apt-get install jenkins
+    sudo systemctl start jenkins
+    sudo systemctl enable jenkins
+    ```
 
-> This is a deployment-test and sneak-peek instance only! You are __not
-> supposed__ to use this instance for your own hacking endeavours! No
-> guaranteed uptime! Guaranteed stern looks if you break it!
+**To access**
+ - localhost:8080 (find password using this command: sudo cat /var/lib/jenkins/secrets/initialAdminPassword), now you can create an admin user. In our case, its musfiqur97,7573
 
-## Documentation
 
-### Node.js version compatibility
+### **Phase 3: Tools plugins installation**
+- Install Necessary Plugins in Jenkins:
+- Go to "Dashboard" in your Jenkins web interface.
+- Navigate to "Manage Jenkins" → "Manage Plugins."
+- Click on the "Available" tab
+- Goto Manage Jenkins →Plugins → Available Plugins → and search for the following plugins and install:
 
-![GitHub package.json dynamic](https://img.shields.io/github/package-json/cpu/bkimminich/juice-shop)
-![GitHub package.json dynamic](https://img.shields.io/github/package-json/os/bkimminich/juice-shop)
+1. Eclipse Temurin Installer
+2. NodeJs Plugin
+3. SonarQube Scanner for Jenkins
+4. Install Docker Tools and Docker Plugins
+    1. Docker
+    2. Docker Commons
+    3. Docker Pipeline
+    4. Docker API
+- Click on the "Install without restart" button to install these plugins.
+- Click on Apply and Save
 
-OWASP Juice Shop officially supports the following versions of
-[node.js](http://nodejs.org) in line with the official
-[node.js LTS schedule](https://github.com/nodejs/LTS) as close as possible. Docker images and packaged distributions are
-offered accordingly.
 
-| node.js | Supported              | Tested             | [Packaged Distributions](#packaged-distributions) | [Docker images](#docker-container) from `master` | [Docker images](#docker-container) from `develop` |
-|:--------|:-----------------------|:-------------------|:--------------------------------------------------|:-------------------------------------------------|:--------------------------------------------------|
-| 23.x    | :x:                    | :x:                |                                                   |                                                  |                                                   |
-| 22.x    | :heavy_check_mark:     | :heavy_check_mark: | Windows (`x64`), MacOS (`x64`), Linux (`x64`)     | `latest` (`linux/amd64`, `linux/arm64`)          | `snapshot` (`linux/amd64`, `linux/arm64`)         |
-| 21.x    | ( :heavy_check_mark: ) | :x:                |                                                   |                                                  |                                                   |
-| 20.x    | :heavy_check_mark:     | :heavy_check_mark: | Windows (`x64`), MacOS (`x64`), Linux (`x64`)     |                                                  |                                                   |
-| <20.x   | :x:                    | :x:                |                                                   |                                                  |                                                   |
+### **Phase 4: Credentials and access token id creation for security tools**
 
-Juice Shop is automatically tested _only on the latest `.x` minor version_ of each node.js version mentioned above!
-There is no guarantee that older minor node.js releases will always work with Juice Shop!
-Please make sure you stay up to date with your chosen version.
+**Step 1: Create the Sonar token:**
+- Goto SonarQube Dashboard → Administration → Security → Users → Update Tokens (Under Tokens/Beside Token Number)→ Enter a Name → Generate → Copy it.
+- Goto Jenkins Dashboard → Manage Jenkins → Credentials → System → Global credentials (unrestricted) → Add Credentials → Secret text → Paste it in Secret → ID: Sonar−token → Description: Sonar−token → Create.
 
-### Troubleshooting
+**Step 2: Create Snyk token:**
+- Create an account on apps.snyk.io for authentication key for sonar token. It will be in the account setting you need to press click to show to get the key.
+- Goto Jenkins Dashboard → Manage Jenkins → Credentials → System → Global credentials (unrestricted) → Add Credentials → Secret text → Paste it in Secret → ID: Snyk−token−id → Description: Snyk−token−→Create
 
-[![Gitter](http://img.shields.io/badge/gitter-join%20chat-1dce73.svg)](https://gitter.im/bkimminich/juice-shop)
+**Step 2: Add DockerHub Credentials:**
+- Create Docker Hub account at https://hub.docker.com/, we will be using this credential to push the image to docker hub
+- To securely handle DockerHub credentials in your Jenkins pipeline, follow these steps:
+- Goto Jenkins Dashboard → Manage Jenkins → Credentials → System → Global credentials (unrestricted) → Add Credentials → Username and Password(docker hub) → Paste it in username and Password → ID: docker → Description:docker−→Create
 
-If you need help with the application setup please check our
-[our existing _Troubleshooting_](https://pwning.owasp-juice.shop/companion-guide/latest/part4/troubleshooting.html)
-guide. If this does not solve your issue please post your specific problem or question in the
-[Gitter Chat](https://gitter.im/bkimminich/juice-shop) where community members can best try to help you.
+### **Phase 5: Security tolls agent creation in Jenkins**
 
-:stop_sign: **Please avoid opening GitHub issues for support requests or questions!**
+**Step 1: Configure Java and Nodejs in Global Tool Configuration:**
+- Goto Manage Jenkins → Tools → Install JDK(17)→ Name: jdk17 → Mark Install automatically → Install from adoptium.net → version jdk−17.0.8.1+1
+- Scroll to NodeJs(16)→ Name: node20 → Mark Install automatically → NodeJS 20.18.2
 
-### Official companion guide
+**Step 2: Configure Setup Sonar Scanner:**
+- Goto Jenkins Dashboard → Manage Jenkins → System→ In SonarQube Sever section (Add SonarQube) → Click Enivironment variable→ Name: sonar−server → Server URL: http://YourIP:9000 → Server authentication token: Sonar−token → Apply → Save.
+- Goto Manage Jenkins → Tools → SonarQube Scanner installations (Add SonarQube Scanner) → Name: sonar−scanner → Version: 7.0.0.4796 → Apply → Save.
 
-[![Write Goodreads Review](https://img.shields.io/badge/goodreads-write%20review-49557240.svg)](https://www.goodreads.com/review/edit/49557240)
+**Step 3: Configure Docker:**
+-  Go to "Dashboard" → "Manage Jenkins" → "Global Tool Configuration  → Docker installations → Add the tool's name, e.g., "docker. → Mark Install automatically→ Install from docker.com → Apply → Save.
 
-OWASP Juice Shop comes with an official companion guide eBook. It will give you a complete overview of all
-vulnerabilities found in the application including hints how to spot and exploit them. In the appendix you will even
-find complete step-by-step solutions to every challenge. Extensive documentation of
-[custom re-branding](https://pwning.owasp-juice.shop/companion-guide/latest/part4/customization.html),
-[CTF-support](https://pwning.owasp-juice.shop/companion-guide/latest/part4/ctf.html),
-[trainer's guide](https://pwning.owasp-juice.shop/companion-guide/latest/part4/trainers.html)
-and much more is also included.
 
-[Pwning OWASP Juice Shop](https://leanpub.com/juice-shop) is published under
-[CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/)
-and is available **for free** in PDF, Kindle and ePub format on LeanPub. You can also
-[browse the full content online](https://pwning.owasp-juice.shop)!
 
-[<img alt="Pwning OWASP Juice Shop cover" src="https://raw.githubusercontent.com/juice-shop/pwning-juice-shop/master/docs/modules/ROOT/assets/images/cover.jpg" width="200"/>](https://leanpub.com/juice-shop)
-[<img alt="Pwning OWASP Juice Shop back cover" src="https://raw.githubusercontent.com/juice-shop/pwning-juice-shop/master/docs/modules/ROOT/assets/images/introduction/back.jpg" width="200"/>](https://leanpub.com/juice-shop)
 
-## Contributing
 
-[![GitHub contributors](https://img.shields.io/github/contributors/bkimminich/juice-shop.svg)](https://github.com/juice-shop/juice-shop/graphs/contributors)
-[![JavaScript Style Guide](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
-[![Crowdin](https://d322cqt584bo4o.cloudfront.net/owasp-juice-shop/localized.svg)](https://crowdin.com/project/owasp-juice-shop)
-![GitHub issues by-label](https://img.shields.io/github/issues/bkimminich/juice-shop/help%20wanted.svg)
-![GitHub issues by-label](https://img.shields.io/github/issues/bkimminich/juice-shop/good%20first%20issue.svg)
+### **Phase 6: Pipeline Code**
 
-We are always happy to get new contributors on board! Please check
-[CONTRIBUTING.md](CONTRIBUTING.md) to learn how to
-[contribute to our codebase](CONTRIBUTING.md#code-contributions) or the
-[translation into different languages](CONTRIBUTING.md#i18n-contributions)!
 
-## References
+```groovy
 
-Did you write a blog post, magazine article or do a podcast about or mentioning OWASP Juice Shop? Or maybe you held or
-joined a conference talk or meetup session, a hacking workshop or public training where this project was mentioned?
+pipeline{
+    agent any
+    tools{
+        jdk 'jdk17'
+        nodejs 'node20'
+    }
+    environment {
+        SCANNER_HOME=tool 'sonar−scanner'
+    }
+    stages {
+        stage('Clean Workspace'){
+            steps{
+                cleanWs()
+            }
+        }
+        stage('Checkout from Git'){
+            steps{
+                git branch: 'master', url: 'https://github.com/musfiqur-m/juice-shop.git'
+            }
+        }
+        stage('SAST - SonarQube'){
+            steps{
+                withSonarQubeEnv('sonar-server') {
+                    sh ''' $SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=Juice-shop \
+                    -Dsonar.projectKey=Juice-shop '''
+                }
+            }
+        }
+	
+        stage('Generate SBOM - CycloneDX') {
+            steps {
+                // Install dependencies
+                sh "npm install"
+                //Generate the SBOM in JSON
+                sh 'cyclonedx-npm --output-file sbom.json --output-format JSON'
+            }
+        }
+        stage('SCA - Snyk') {
+            steps {
+                // Use withCredentials to bind a "Secret text" credential as a string.
+                withCredentials([string(credentialsId: 'Snyk−token−id', variable: 'SNYK_TOKEN')]) {
+                    sh "snyk auth ${SNYK_TOKEN}"
+                    // Adjust the --org flag value to match your Snyk organization.
+                    sh "snyk monitor --org=musfiqur-m"
+                }
+            }
+        }
+        stage('File System Scan - Trivy') {
+            steps {
+                sh "trivy fs -f json -o File_System_Scan_Report_Trivy.json ."
+            }
+        }
+        stage("Docker Build & Push"){
+            steps{
+                script{
+                   withDockerRegistry(credentialsId: 'docker', toolName: 'docker'){   
+                       // Replace mmusfiqur97 with your docker username
+                       sh "docker build --no-cache -t musfiqur97/juice-shop:latest ."
+                       sh "docker push musfiqur97/juice-shop:latest"
+                    }
+                }
+            }
+        }
+        stage("Container Scan - Trivy"){
+            steps{
+                sh "wget https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/html.tpl -P contrib/"
+                sh "trivy image --format template --template \"@contrib/html.tpl\" -o Container_Scan_Report_Trivy.html musfiqur97/juice-shop:latest" 
+            }
+        }
+        stage('Deploy Container'){
+            steps{
+                sh 'docker run -d -p 3000:3000 musfiqur97/juice-shop:latest'
+            }
+        }
+        stage('DAST - OWASP ZAP'){
+            steps{
+                sh "chmod 777 \$(pwd)"
+                sh "docker run --rm -v \$(pwd):/zap/wrk/:rw --name owasp -dt zaproxy/zap-stable /bin/bash"
+                // Replace YourIP with your VM instance IP 
+                sh "docker exec owasp zap-baseline.py -t http://YourIP:3000/ -I -j --auto -r DAST_Report.html"
+                sh ''' docker cp owasp:/zap/wrk/DAST_Report.html ${WORKSPACE}/DAST_Report.html '''
+                sh "docker stop owasp"
+            }
+        }
+    }
+    post {
+        always {
+            // Archive SBOM, Trivy reports and ZAP report
+            archiveArtifacts artifacts: 'sbom.json, File_System_Scan_Report_Trivy.json, Container_Scan_Report_Trivy.html, DAST_Report.html', fingerprint: true
+        }
+    }
+}
 
-Add it to our ever-growing list of [REFERENCES.md](REFERENCES.md) by forking and opening a Pull Request!
 
-## Merchandise
+```
 
-* On [Spreadshirt.com](http://shop.spreadshirt.com/juiceshop) and
-  [Spreadshirt.de](http://shop.spreadshirt.de/juiceshop) you can get some swag (Shirts, Hoodies, Mugs) with the official
-  OWASP Juice Shop logo
-* On
-  [StickerYou.com](https://www.stickeryou.com/products/owasp-juice-shop/794)
-  you can get variants of the OWASP Juice Shop logo as single stickers to decorate your laptop with. They can also print
-  magnets, iron-ons, sticker sheets and temporary tattoos.
-
-## Donations
-
-[![](https://img.shields.io/badge/support-owasp%20juice%20shop-blue)](https://owasp.org/donate/?reponame=www-project-juice-shop&title=OWASP+Juice+Shop)
-
-The OWASP Foundation gratefully accepts donations via Stripe. Projects such as Juice Shop can then request reimbursement
-for expenses from the Foundation. If you'd like to express your support of the Juice Shop project, please make sure to
-tick the "Publicly list me as a supporter of OWASP Juice Shop" checkbox on the donation form. You can find our more
-about donations and how they are used here:
-
-<https://pwning.owasp-juice.shop/companion-guide/latest/part3/donations.html>
-
-## Contributors
-
-The OWASP Juice Shop Project Leaders are:
-
-- [Björn Kimminich](https://github.com/bkimminich) aka `bkimminich` [![Keybase PGP](https://img.shields.io/keybase/pgp/bkimminich)](https://keybase.io/bkimminich)
-- [Jannik Hollenbach](https://github.com/J12934) aka `J12934`
-
-For a list of all contributors to the OWASP Juice Shop please visit our
-[HALL_OF_FAME.md](HALL_OF_FAME.md).
-
-## Licensing
-
-[![license](https://img.shields.io/github/license/bkimminich/juice-shop.svg)](LICENSE)
-
-This program is free software: you can redistribute it and/or modify it under the terms of the [MIT license](LICENSE).
-OWASP Juice Shop and any contributions are Copyright © by Bjoern Kimminich & the OWASP Juice Shop contributors
-2014-2025.
-
-![Juice Shop Logo](https://raw.githubusercontent.com/bkimminich/juice-shop/master/frontend/src/assets/public/images/JuiceShop_Logo_400px.png)
+- If you get docker login failed errorr
+```bash
+sudo su
+sudo usermod -aG docker jenkins
+sudo systemctl restart jenkins
+```
